@@ -1,0 +1,13 @@
+EncodingMapper.cpp:
+	precompiledHeaders.h
+    EncodingMapper.h
+    Scintilla.h
+EncodingMapper.h:
+lesDlgs.cpp:
+	precompiledHeaders.h
+	lesDlgs.h
+	resource.h
+	menuCmdID.h
+lesDlgs.h:
+resource.h:
+menuCmdID.h:

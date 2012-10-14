@@ -1,0 +1,91 @@
+EncodingMapper.cpp:
+	precompiledHeaders.h
+    EncodingMapper.h
+    Scintilla.h
+EncodingMapper.h:
+	lesDlgs.h
+lesDlgs.cpp:
+	precompiledHeaders.h
+	lesDlgs.h
+	resource.h
+	menuCmdID.h
+lesDlgs.h:
+	EncodingMapper.h
+resource.h:
+menuCmdID.h:
+Parameters.h:
+	tinyxmlA.h
+	tinyxml.h
+	Scintilla.h
+	ScintillaRef.h
+	ToolBar.h
+	UserDefineLangReference.h
+	colors.h
+	shortcut.h
+	ContextMenu.h
+Parameters.cpp:
+	precompiledHeaders.h
+    Parameters.h
+    FileDialog.h
+    ScintillaEditView.h
+    keys.h
+    localization.h
+Notepad_plus_Window.h:
+	Notepad_plus.h
+Notepad_plus.h:
+	ScintillaEditView.h
+	DocTabView.h
+	SplitterContainer.h
+	FindReplaceDlg.h
+	AboutDlg.h
+	RunDlg.h
+	StatusBar.h
+	lastRecentFileList.h
+	GoToLineDlg.h
+	FindCharsInRange.h
+	columnEditor.h
+	WordStyleDlg.h
+	trayIconControler.h
+	PluginsManager.h
+	preferenceDlg.h
+	WindowsDlg.h
+	RunMacroDlg.h
+	DockingManager.h
+	Process.h
+	AutoCompletion.h
+	SmartHighlighter.h
+	ScintillaCtrls.h
+	lesDlgs.h
+	localization.h
+localization.h:
+	tinyxmlA.h
+Notepad_plus_Window.cpp:
+	precompiledHeaders.h
+    Notepad_plus_Window.h
+Notepad_plus.cpp:
+	precompiledHeaders.h
+    Notepad_plus.h
+    Notepad_plus_Window.h
+    FileDialog.h
+    printer.h
+    FileNameStringSplitter.h
+    lesDlgs.h
+    Utf8_16.h
+    regExtDlg.h
+    RunDlg.h
+    ShortcutMapper.h
+    preferenceDlg.h
+    TaskListDlg.h
+    xmlMatchedTagsHighlighter.h
+    EncodingMapper.h
+    ansiCharPanel.h
+    clipboardHistoryPanel.h
+    VerticalFileSwitcher.h
+    ProjectPanel.h
+    documentMap.h
+localization.cpp:
+	precompiledHeaders.h
+    Notepad_plus.h
+    ShortcutMapper.h
+    EncodingMapper.h
+    localization.h
