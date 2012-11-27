@@ -1,0 +1,5 @@
+EncodingMapper.cpp:
+	precompiledHeaders.h
+	EncodingMapper.h
+	Scintilla.h
+EncodingMapper.h:
