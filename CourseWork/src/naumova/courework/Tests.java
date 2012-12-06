@@ -2,6 +2,9 @@ package naumova.courework;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 public class Tests {
@@ -89,5 +92,18 @@ public class Tests {
 		assertEquals(result, courseWork.parseDirectory("./c_code/cpp/test8",
 				"./c_code/h/test8"));
 	}
-
+	@Test
+	public void test9()
+	{
+		List<FileCourse> expectedList = new ArrayList<FileCourse>();
+		FileCourse encodingMapperCpp = new FileCourse("EncodingMapper.cpp");
+		encodingMapperCpp.addInclude("precompiledHeaders.h");
+		encodingMapperCpp.addInclude("EncodingMapper.h");
+		encodingMapperCpp.addInclude("Scintilla.h");
+		expectedList.add(encodingMapperCpp);
+		FileCourse encodingMapperH = new FileCourse("EncodingMapper.h"); 
+		expectedList.add(encodingMapperH);
+		assertEquals(CourseWork.print(expectedList), courseWork.parseDirectory("./c_code/cpp/test3",
+				"./c_code/h/test3"));
+	}
 }

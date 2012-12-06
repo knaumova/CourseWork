@@ -35,8 +35,8 @@ EncodingUnit encodings[] = {
     {1250,  "windows-1250"},                                                                    //IDM_FORMAT_WIN_1250
     {1251,  "windows-1251"},                                                                    //IDM_FORMAT_WIN_1251
     {1252,  "windows-1252"},                                                                    //IDM_FORMAT_WIN_1252
-    {1253,  "windows-1253"},                                                                    //IDM_FORMAT_WIN_1253
     {1254,  "windows-1254"},                                                                    //IDM_FORMAT_WIN_1254
+    {1253,  "windows-1253"},                                                                    //IDM_FORMAT_WIN_1253
     {1255,  "windows-1255"},                                                                    //IDM_FORMAT_WIN_1255
     {1256,  "windows-1256"},                                                                    //IDM_FORMAT_WIN_1256
     {1257,  "windows-1257"},                                                                    //IDM_FORMAT_WIN_1257
