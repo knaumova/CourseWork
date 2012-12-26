@@ -1,49 +1,20 @@
 package naumova.courework;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CourseWork {
 
 	public List<FileCourse> files;
+
 
 	/**
 	 * Empty constructor
 	 */
 	public CourseWork() {
 		files = new ArrayList<FileCourse>();
-	}
-
-	/**
-	 * Method return String with file content.
-	 * 
-	 * @param pathToFile
-	 *            - Path to file which is red
-	 * @return String with file content
-	 */
-	public static String readFromFile(String pathToFile) {
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader(pathToFile));
-
-			String line = null;
-			StringBuilder stringBuilder = new StringBuilder();
-			String ls = System.getProperty("line.separator");
-
-			while ((line = reader.readLine()) != null) {
-				stringBuilder.append(line);
-				stringBuilder.append(ls);
-			}
-			reader.close();
-			return stringBuilder.toString();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/**
@@ -56,13 +27,13 @@ public class CourseWork {
 	public List<String> getAllHeadersInFile(String fileContent) {
 		List<String> includesList = new ArrayList<String>();
 		String[] lines = fileContent.split("\r\n");// split to lines
-		boolean isInclude = false, isIncludeName = false, isComments = false, isExtension = false;
+		boolean isInclude = false, isIncludeName = false, isComments = false, isExtension = false, isQuote = false;
 		for (String line : lines) {
 			StringBuilder sb = new StringBuilder();
 			char[] charArray = line.toCharArray();
-			// isComments = false;
 			isInclude = false;
 			isIncludeName = false;
+			isQuote = false;
 			for (int i = 0; i < charArray.length; i++) {
 				switch (charArray[i]) {
 				case '/':
@@ -94,7 +65,6 @@ public class CourseWork {
 					}
 					sb = new StringBuilder();
 					isInclude = true;
-					// sb.append('#');
 					break;
 				case 'i':
 					if (isIncludeName) {
@@ -161,9 +131,19 @@ public class CourseWork {
 					break;
 				case '"':
 					if (isInclude && charArray[i - 1] == ' ') {
-						// sb.append('"');
 						isInclude = false;
 						isIncludeName = true;
+						isQuote = true;
+					} else {
+						isInclude = false;
+						sb = new StringBuilder();
+					}
+					break;
+				case '<':
+					if (isInclude && charArray[i - 1] == ' ') {
+						isInclude = false;
+						isIncludeName = true;
+						isQuote = false;
 					} else {
 						isInclude = false;
 						sb = new StringBuilder();
@@ -186,8 +166,14 @@ public class CourseWork {
 						sb.append('h');
 						isExtension = false;
 						if (i + 1 < charArray.length) {
-							if (charArray[i + 1] == '"') {
-								includesList.add(sb.toString());
+							if (isQuote) {
+								if (charArray[i + 1] == '"') {
+									includesList.add(sb.toString());
+								}
+							} else {
+								if (charArray[i + 1] == '>') {
+									includesList.add(sb.toString());
+								}
 							}
 						}
 					} else {
@@ -209,6 +195,14 @@ public class CourseWork {
 		return includesList;
 	}
 
+	/**
+	 * Method return boolean value if character is possible to be in the file
+	 * name
+	 * 
+	 * @param c
+	 *            - character
+	 * @return
+	 */
 	private boolean isInSet(char c) {
 		c = String.valueOf(c).toLowerCase().toCharArray()[0];
 		if (c == '_' || c == '-')
@@ -225,54 +219,30 @@ public class CourseWork {
 	}
 
 	/**
-	 * Method return result string: nameOfFile:includes
+	 * Method
 	 * 
-	 * @param pathToCpp
-	 *            - path to files with .cpp extension
-	 * @param pathToH
-	 *            - path to files with .h extension
+	 * @param names
+	 *            - list of file names
+	 * @param codeReader
+	 *            - one of CodeReader's implementation.
 	 * @return
 	 */
-	public String parseDirectory(String pathToCpp, String pathToH) {
-		String fileName;
-		File folderCpp = new File(pathToCpp);
-		File folderH = new File(pathToH);
-		File[] listOfFilesCpp = folderCpp.listFiles();
-		File[] listOfFilesH = folderH.listFiles();
-
-		for (int i = 0; i < listOfFilesCpp.length; i++) {
-
-			if (listOfFilesCpp[i].isFile()) {
-				fileName = listOfFilesCpp[i].getName();
-				if (fileName.toLowerCase().endsWith(".cpp")) {
-					FileCourse tempFile = new FileCourse();
-					String fileContent = readFromFile(listOfFilesCpp[i]
-							.getPath());
-					tempFile.setFileName(fileName);
-					tempFile.setIncludes(getAllHeadersInFile(fileContent));
-					files.add(tempFile);
-				}
-			}
-		}
-		for (int i = 0; i < listOfFilesH.length; i++) {
-
-			if (listOfFilesH[i].isFile()) {
-				fileName = listOfFilesH[i].getName();
-				if (fileName.toLowerCase().endsWith(".h")) {
-					FileCourse tempFile = new FileCourse();
-					String fileContent = readFromFile(listOfFilesH[i].getPath());
-					tempFile.setFileName(fileName);
-					tempFile.setIncludes(getAllHeadersInFile(fileContent));
-					files.add(tempFile);
-				}
-			}
+	public String parseDirectory(List<String> names, CodeReader codeReader) {
+		String fileName = "";
+		for (int i = 0; i < names.size(); i++) {
+			fileName = names.get(i);
+			FileCourse tempFile = new FileCourse();
+			String fileContent = codeReader.readFromFile(fileName);
+			tempFile.setFileName(fileName);
+			tempFile.setIncludes(getAllHeadersInFile(fileContent));
+			files.add(tempFile);
 		}
 		return print(files);
 	}
 
 	/**
 	 * Method print result to console, to result string from files(list of
-	 * FileCourse - member of CourseWork)
+	 * FileCourse - member of CourseWork
 	 * 
 	 * @return result string
 	 */
@@ -290,13 +260,56 @@ public class CourseWork {
 	}
 
 	/**
+	 * Method gets file names with extensions .c, .h, .cpp from set directory
+	 * 
+	 * @param pathToFiles
+	 * @return
+	 */
+	public static List<String> getNamesOfFiles(String pathToFiles) {
+		List<String> fileNames = new ArrayList<String>();
+		File folder = new File(pathToFiles);
+		File[] listOfFiles = folder.listFiles();
+		for (File fileCpp : listOfFiles) {
+			if (fileCpp.isFile()) {
+				if (fileCpp.getName().toLowerCase().endsWith(".c")
+						|| fileCpp.getName().toLowerCase().endsWith(".h")
+						|| fileCpp.getName().toLowerCase().endsWith(".cpp"))
+					fileNames.add(fileCpp.getName());
+			}
+		}
+		return fileNames;
+	}
+
+	/**
+	 * Method get directory from console or default directory.
+	 * 
+	 * @return
+	 */
+	public static String getDirectoryPath() {
+		Scanner lineInput = new Scanner(System.in);
+		System.out
+				.println("If you want to enter your directory with files of C code then press 1, else press any key:");
+		int answer = lineInput.nextInt();
+		switch (answer) {
+		case 1:
+			System.out.println("Enter directory's path in next format: C:/dir1/dir2/ or ./dir/ if your files are situeted in project directory:");
+			String result = lineInput.next();
+			return result;
+		default:
+			return "./c_code/";
+		}
+	}
+
+	/**
 	 * Main method
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		CourseWork courseWork = new CourseWork();
-		courseWork.parseDirectory("./c_code/cpp/test3", "./c_code/h/test3");
+		String directoryPath = getDirectoryPath();
+		courseWork.parseDirectory(getNamesOfFiles(directoryPath),
+				new CodeReaderFileSystem(directoryPath));
 	}
 
 }
